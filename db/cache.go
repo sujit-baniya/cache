@@ -11,6 +11,7 @@ type Config struct {
 	Username string
 	Password string
 	DB       string
+	Table    string
 	Port     int
 }
 
@@ -36,6 +37,7 @@ func New(cfg ...Config) *Cache {
 		Username: config.Username,
 		Password: config.Password,
 		Database: config.DB,
+		Table:    config.Table,
 	})
 	DefaultCache = cs
 	return cs
