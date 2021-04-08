@@ -11,6 +11,8 @@ github.com/go-redis/redis/v8 v8.8.0 h1:fDZP58UN/1RD3DjtTXP/fFZ04TFohSYhjZDkcDe2d
 github.com/go-redis/redis/v8 v8.8.0/go.mod h1:F7resOH5Kdug49Otu24RjHWwgK7u9AmtqWMnCV1iP5Y=
 github.com/gofiber/storage/memory v0.0.0-20210406212841-7cfce7a88b07 h1:GEvmsnE0q1KaLRsCkiyHdXK8Tyt1Utes5+ww7WE2fOs=
 github.com/gofiber/storage/memory v0.0.0-20210406212841-7cfce7a88b07/go.mod h1:7aJr9KTG0EoLVCqJ8Pnr2LpRGn2DrcO5euzmpw/GB00=
+github.com/gofiber/storage/postgres v0.0.0-20210406212841-7cfce7a88b07 h1:wbgV4+fkUY9BA2ZPIDC7tD4XYgLcl5iC+zcTfK/lFtU=
+github.com/gofiber/storage/postgres v0.0.0-20210406212841-7cfce7a88b07/go.mod h1:sCxMexEV1O9jjyLLbOjlGT2E4VsZ0f4rEEgMb2nZ4AA=
 github.com/gofiber/storage/redis v0.0.0-20210406212841-7cfce7a88b07 h1:aFA7P5IRLMZSIYecrO+zmJDG8SrcKQG70iOm8uQIBuM=
 github.com/gofiber/storage/redis v0.0.0-20210406212841-7cfce7a88b07/go.mod h1:86sfM7ATqC36iM10eg9QyBeNOjMDHYpsX1yqZjwgZac=
 github.com/gofiber/utils v0.1.2 h1:1SH2YEz4RlNS0tJlMJ0bGwO0JkqPqvq6TbHK9tXZKtk=
@@ -28,6 +30,8 @@ github.com/google/go-cmp v0.4.0/go.mod h1:v8dTdLbMG2kIc/vJvl+f65V22dbkXbowE6jgT/
 github.com/google/go-cmp v0.5.5 h1:Khx7svrCpmxxtHBq5j2mp/xVjsi8hQMfNLvJFAlrGgU=
 github.com/google/go-cmp v0.5.5/go.mod h1:v8dTdLbMG2kIc/vJvl+f65V22dbkXbowE6jgT/gNBxE=
 github.com/hpcloud/tail v1.0.0/go.mod h1:ab1qPbhIpdTxEkNHXyeSf5vhxWSCs/tWer42PpOxQnU=
+github.com/lib/pq v1.10.0 h1:Zx5DJFEYQXio93kgXnQ09fXNiUKsqv4OUEu2UtGcB1E=
+github.com/lib/pq v1.10.0/go.mod h1:AlVN5x4E4T544tWzH6hKfbfQvm3HdbOxrmggDNAPY9o=
 github.com/nxadm/tail v1.4.4 h1:DQuhQpB1tVlglWS2hLQ5OV6B5r8aGxSrPc5Qo6uTN78=
 github.com/nxadm/tail v1.4.4/go.mod h1:kenIhsEOeOJmVchQTgglprH7qJGnHDVpk1VPCcaMI8A=
 github.com/onsi/ginkgo v1.6.0/go.mod h1:lLunBs/Ym6LB5Z9jYTR76FiuTmxDTDusOGeTQH+WWjE=

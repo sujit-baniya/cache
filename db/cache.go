@@ -1,8 +1,8 @@
-package cache
+package db
 
 import (
 	"github.com/gofiber/storage/memory"
-	"github.com/gofiber/storage/redis"
+	"github.com/gofiber/storage/postgres"
 	"time"
 )
 
@@ -10,18 +10,18 @@ type Config struct {
 	Host     string
 	Username string
 	Password string
-	DB       int
+	DB       string
 	Port     int
 }
 
 type Cache struct {
 	Memory *memory.Storage
-	Redis  *redis.Storage
+	DB     *postgres.Storage
 }
 
 var DefaultCache = &Cache{
 	Memory: memory.New(),
-	Redis:  redis.New(),
+	DB:     postgres.New(),
 }
 
 func New(cfg ...Config) *Cache {
@@ -30,7 +30,7 @@ func New(cfg ...Config) *Cache {
 		return DefaultCache
 	}
 	config := cfg[0]
-	cs.Redis = redis.New(redis.Config{
+	cs.DB = postgres.New(postgres.Config{
 		Host:     config.Host,
 		Port:     config.Port,
 		Username: config.Username,
@@ -42,7 +42,7 @@ func New(cfg ...Config) *Cache {
 }
 
 func Set(key string, value []byte, ttl time.Duration) error {
-	err := DefaultCache.Redis.Set(key, value, ttl)
+	err := DefaultCache.DB.Set(key, value, ttl)
 	if err != nil {
 		return err
 	}
@@ -61,7 +61,7 @@ func Get(key string) ([]byte, error) {
 	if val != nil {
 		return val, nil
 	}
-	val, err = DefaultCache.Redis.Get(key)
+	val, err = DefaultCache.DB.Get(key)
 	if err != nil {
 		return nil, err
 	}
@@ -70,7 +70,7 @@ func Get(key string) ([]byte, error) {
 }
 
 func Delete(key string) error {
-	err := DefaultCache.Redis.Delete(key)
+	err := DefaultCache.DB.Delete(key)
 	if err != nil {
 		return err
 	}
@@ -82,7 +82,7 @@ func Delete(key string) error {
 }
 
 func Close() error {
-	err := DefaultCache.Redis.Close()
+	err := DefaultCache.DB.Close()
 	if err != nil {
 		return err
 	}
@@ -94,7 +94,7 @@ func Close() error {
 }
 
 func Reset() error {
-	err := DefaultCache.Redis.Reset()
+	err := DefaultCache.DB.Reset()
 	if err != nil {
 		return err
 	}
