@@ -44,8 +44,6 @@ github.com/gofiber/storage/memory v0.0.0-20210406212841-7cfce7a88b07 h1:GEvmsnE0
 github.com/gofiber/storage/memory v0.0.0-20210406212841-7cfce7a88b07/go.mod h1:7aJr9KTG0EoLVCqJ8Pnr2LpRGn2DrcO5euzmpw/GB00=
 github.com/gofiber/storage/postgres v0.0.0-20210406212841-7cfce7a88b07 h1:wbgV4+fkUY9BA2ZPIDC7tD4XYgLcl5iC+zcTfK/lFtU=
 github.com/gofiber/storage/postgres v0.0.0-20210406212841-7cfce7a88b07/go.mod h1:sCxMexEV1O9jjyLLbOjlGT2E4VsZ0f4rEEgMb2nZ4AA=
-github.com/gofiber/storage/redis v0.0.0-20210406212841-7cfce7a88b07 h1:aFA7P5IRLMZSIYecrO+zmJDG8SrcKQG70iOm8uQIBuM=
-github.com/gofiber/storage/redis v0.0.0-20210406212841-7cfce7a88b07/go.mod h1:86sfM7ATqC36iM10eg9QyBeNOjMDHYpsX1yqZjwgZac=
 github.com/gofiber/utils v0.1.2 h1:1SH2YEz4RlNS0tJlMJ0bGwO0JkqPqvq6TbHK9tXZKtk=
 github.com/gofiber/utils v0.1.2/go.mod h1:pacRFtghAE3UoknMOUiXh2Io/nLWSUHtQCi/3QASsOc=
 github.com/golang/glog v0.0.0-20160126235308-23def4e6c14b/go.mod h1:SBH7ygxi8pfUlaOkMMuAQtPIUF8ecWP5IEl/CR7VP2Q=

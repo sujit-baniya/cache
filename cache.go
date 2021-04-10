@@ -1,27 +1,33 @@
 package cache
 
 import (
-	"github.com/gofiber/storage/memory"
-	"github.com/gofiber/storage/redis"
+	"context"
 	"time"
+
+	"github.com/go-redis/redis/v8"
+	"github.com/gofiber/storage/memory"
 )
 
+var ctx = context.Background()
+
 type Config struct {
-	Host     string
-	Username string
+	Addr     string
 	Password string
 	DB       int
-	Port     int
 }
 
 type Cache struct {
 	Memory *memory.Storage
-	Redis  *redis.Storage
+	Redis  *redis.Client
 }
 
 var DefaultCache = &Cache{
 	Memory: memory.New(),
-	Redis:  redis.New(),
+	Redis: redis.NewClient(&redis.Options{
+		Addr:     "localhost:6379",
+		Password: "", // no password set
+		DB:       0,  // use default DB
+	}),
 }
 
 func New(cfg ...Config) *Cache {
@@ -30,23 +36,21 @@ func New(cfg ...Config) *Cache {
 		return DefaultCache
 	}
 	config := cfg[0]
-	cs.Redis = redis.New(redis.Config{
-		Host:     config.Host,
-		Port:     config.Port,
-		Username: config.Username,
+	cs.Redis = redis.NewClient(&redis.Options{
+		Addr:     config.Addr,
 		Password: config.Password,
-		Database: config.DB,
+		DB:       config.DB,
 	})
 	DefaultCache = cs
 	return cs
 }
 
 func Set(key string, value []byte, ttl time.Duration) error {
-	err := DefaultCache.Redis.Set(key, value, ttl)
-	if err != nil {
-		return err
+	status := DefaultCache.Redis.Set(ctx, key, value, ttl)
+	if status.Err() != nil {
+		return status.Err()
 	}
-	err = DefaultCache.Memory.Set(key, value, 10*time.Minute)
+	err := DefaultCache.Memory.Set(key, value, 10*time.Minute)
 	if err != nil {
 		return err
 	}
@@ -61,20 +65,38 @@ func Get(key string) ([]byte, error) {
 	if val != nil {
 		return val, nil
 	}
-	val, err = DefaultCache.Redis.Get(key)
-	if err != nil {
-		return nil, err
+	redisValue := DefaultCache.Redis.Get(ctx, key)
+	if redisValue.Err() != nil {
+		return nil, redisValue.Err()
 	}
-	DefaultCache.Memory.Set(key, val, 10*time.Minute)
+	bt, _ := redisValue.Bytes()
+	DefaultCache.Memory.Set(key, bt, 10*time.Minute)
 	return val, nil
 }
 
 func Delete(key string) error {
-	err := DefaultCache.Redis.Delete(key)
+	status := DefaultCache.Redis.Del(ctx, key)
+	if status.Err() != nil {
+		return status.Err()
+	}
+	err := DefaultCache.Memory.Delete(key)
 	if err != nil {
 		return err
 	}
-	err = DefaultCache.Memory.Delete(key)
+	return nil
+}
+
+func DeletePattern(key string) error {
+	status := DefaultCache.Redis.Keys(ctx, key)
+	if status.Err() != nil {
+		return status.Err()
+	}
+	keys, _ := status.Result()
+	st := DefaultCache.Redis.Del(ctx, keys...)
+	if st.Err() != nil {
+		return st.Err()
+	}
+	err := DefaultCache.Memory.Delete(key)
 	if err != nil {
 		return err
 	}
@@ -94,11 +116,11 @@ func Close() error {
 }
 
 func Reset() error {
-	err := DefaultCache.Redis.Reset()
-	if err != nil {
-		return err
+	status := DefaultCache.Redis.FlushDB(ctx)
+	if status.Err() != nil {
+		return status.Err()
 	}
-	err = DefaultCache.Memory.Reset()
+	err := DefaultCache.Memory.Reset()
 	if err != nil {
 		return err
 	}
