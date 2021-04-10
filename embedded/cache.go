@@ -17,7 +17,9 @@ type Cache struct {
 
 var DefaultCache = &Cache{
 	Memory: memory.New(),
-	DB:     badger.New(),
+	DB: badger.New(badger.Config{
+		Database: "/tmp/cache.vrest",
+	}),
 }
 
 func New(cfg ...Config) *Cache {
