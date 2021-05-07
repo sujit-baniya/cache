@@ -86,6 +86,15 @@ func Delete(key string) error {
 	return nil
 }
 
+func Keys(pattern string) ([]string, error) {
+	status := DefaultCache.Redis.Keys(ctx, pattern)
+	if status.Err() != nil {
+		return nil, status.Err()
+	}
+	keys, _ := status.Result()
+	return keys, nil
+}
+
 func DeletePattern(key string) error {
 	status := DefaultCache.Redis.Keys(ctx, key)
 	if status.Err() != nil {
