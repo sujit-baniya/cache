@@ -2,6 +2,7 @@ package cache
 
 import (
 	"context"
+	"fmt"
 	"time"
 
 	"github.com/go-redis/redis/v8"
@@ -11,9 +12,12 @@ import (
 var ctx = context.Background()
 
 type Config struct {
-	Addr     string
-	Password string
-	DB       int
+	Driver   string `yaml:"driver" env:"CACHE_DRIVER"`
+	Name     string `yaml:"name" env:"CACHE_NAME"`
+	Host     string `yaml:"host" env:"CACHE_HOST"`
+	Password string `yaml:"password" env:"CACHE_PASSWORD"`
+	Port     int    `yaml:"port" env:"CACHE_PORT"`
+	DB       int    `yaml:"db" env:"CACHE_DB"`
 }
 
 type Cache struct {
@@ -30,18 +34,21 @@ var DefaultCache = &Cache{
 	}),
 }
 
+func Default(cfg Config) {
+	DefaultCache = New(cfg)
+}
+
 func New(cfg ...Config) *Cache {
 	cs := &Cache{Memory: memory.New()}
 	if len(cfg) == 0 {
 		return DefaultCache
 	}
-	config := cfg[0]
+	c := cfg[0]
 	cs.Redis = redis.NewClient(&redis.Options{
-		Addr:     config.Addr,
-		Password: config.Password,
-		DB:       config.DB,
+		Addr:     fmt.Sprintf("%s:%d", c.Host, c.Port),
+		Password: c.Password,
+		DB:       c.DB,
 	})
-	DefaultCache = cs
 	return cs
 }
 
