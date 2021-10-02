@@ -142,3 +142,7 @@ func Reset() error {
 	}
 	return nil
 }
+
+func Client() *redis.Client {
+	return DefaultCache.Redis
+}
